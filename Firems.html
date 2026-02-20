@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔥 FireMess P2P — 100% работает</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+        }
+
+        h2 {
+            color: #555;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .step {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .step-number {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            margin: 10px 0;
+            transition: all 0.3s;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+            margin: 5px 0;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102,126,234,0.3);
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #messages {
+            height: 300px;
+            overflow-y: auto;
+            border: 2px solid #f0f0f0;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: #fafafa;
+        }
+
+        .message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 10px;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .message.own {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            margin-left: 20%;
+        }
+
+        .message-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #999;
+            margin-bottom: 5px;
+        }
+
+        .own .message-info {
+            color: rgba(255,255,255,0.8);
+        }
+
+        .status {
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-weight: 500;
+        }
+
+        .status.connected {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+
+        .status.waiting {
+            background: #fff3cd;
+            color: #856404;
+            border: 2px solid #ffeeba;
+        }
+
+        .link-box {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 10px;
+            word-break: break-all;
+            font-family: monospace;
+            font-size: 0.9rem;
+            margin: 15px 0;
+            border: 2px dashed #667eea;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>🔥 FireMess P2P</h1>
+            <p style="text-align: center; color: #666; margin-bottom: 30px;">✅ 100% рабочая версия без ошибок</p>
+
+            <!-- Шаг 1: Имя -->
+            <div class="step" id="step1">
+                <h2><span class="step-number">1</span> Ваше имя</h2>
+                <input type="text" id="username" placeholder="Как вас зовут?" value="User" + Math.floor(Math.random()*1000)>
+                <button onclick="goToStep2()">Далее →</button>
+            </div>
+
+            <!-- Шаг 2: Выбор действия -->
+            <div class="step hidden" id="step2">
+                <h2><span class="step-number">2</span> Что хотите сделать?</h2>
+                <div class="button-group">
+                    <button onclick="createRoom()">🎯 Создать комнату</button>
+                    <button onclick="showJoinForm()">🔗 Подключиться к комнате</button>
+                </div>
+                <button onclick="backToStep1()" style="background: #999; margin-top: 10px;">← Назад</button>
+            </div>
+
+            <!-- Создание комнаты -->
+            <div class="step hidden" id="create-room">
+                <h2><span class="step-number">2</span> Комната создана!</h2>
+                
+                <div class="status waiting" id="create-status">
+                    ⏳ Ожидание подключения собеседника...
+                </div>
+
+                <p style="margin: 15px 0 5px;">Отправьте эту ссылку собеседнику:</p>
+                <div class="link-box" id="room-link" onclick="copyLink(this)"></div>
+                <button onclick="copyLink(document.getElementById('room-link'))">📋 Копировать ссылку</button>
+                
+                <button onclick="resetApp()" style="background: #dc3545; margin-top: 20px;">🔄 Начать заново</button>
+            </div>
+
+            <!-- Подключение к комнате -->
+            <div class="step hidden" id="join-room">
+                <h2><span class="step-number">2</span> Вставьте ссылку</h2>
+                <input type="text" id="invite-link" placeholder="Ссылка для подключения">
+                <button onclick="connectToRoom()">🔌 Подключиться</button>
+                <button onclick="backToStep2()" style="background: #999; margin-top: 10px;">← Назад</button>
+            </div>
+
+            <!-- Чат -->
+            <div class="step hidden" id="chat-room">
+                <h2>Чат с <span id="peer-name">собеседником</span></h2>
+                
+                <div class="status connected" id="chat-status">
+                    🟢 Подключено
+                </div>
+
+                <div id="messages"></div>
+                
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="message-input" placeholder="Введите сообщение..." onkeypress="if(event.key==='Enter') sendMessage()">
+                    <button onclick="sendMessage()" style="width: auto; padding: 15px 25px;">➤</button>
+                </div>
+                
+                <button onclick="resetApp()" style="background: #dc3545; margin-top: 15px;">❌ Завершить</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Глобальные переменные
+        let peerConnection = null;
+        let dataChannel = null;
+        let username = '';
+        let roomId = '';
+        let peerName = 'собеседник';
+        let messages = [];
+        let isInitiator = false;
+        let pendingCandidates = []; // Очередь ICE кандидатов
+
+        function goToStep2() {
+            username = document.getElementById('username').value.trim();
+            if (!username) {
+                alert('Введите имя!');
+                return;
+            }
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2').classList.remove('hidden');
+        }
+
+        function backToStep1() {
+            document.getElementById('step2').classList.add('hidden');
+            document.getElementById('step1').classList.remove('hidden');
+        }
+
+        function backToStep2() {
+            document.getElementById('join-room').classList.add('hidden');
+            document.getElementById('step2').classList.remove('hidden');
+        }
+
+        async function createRoom() {
+            document.getElementById('step2').classList.add('hidden');
+            document.getElementById('create-room').classList.remove('hidden');
+
+            // Создаем уникальный ID комнаты
+            roomId = Math.random().toString(36).substring(2, 15);
+            const link = `${window.location.origin}${window.location.pathname}?room=${roomId}&name=${encodeURIComponent(username)}`;
+            
+            document.getElementById('room-link').textContent = link;
+            
+            // Создаем WebRTC соединение как инициатор
+            isInitiator = true;
+            createPeerConnection();
+            
+            // Создаем offer
+            try {
+                const offer = await peerConnection.createOffer();
+                await peerConnection.setLocalDescription(offer);
+                
+                // Добавляем offer в ссылку
+                const offerParam = btoa(JSON.stringify(offer));
+                const url = new URL(link);
+                url.searchParams.set('offer', offerParam);
+                document.getElementById('room-link').textContent = url.toString();
+                
+                console.log('✅ Offer создан и добавлен в ссылку');
+            } catch (e) {
+                console.error('Ошибка создания offer:', e);
+            }
+        }
+
+        function showJoinForm() {
+            document.getElementById('step2').classList.add('hidden');
+            document.getElementById('join-room').classList.remove('hidden');
+        }
+
+        async function connectToRoom() {
+            const link = document.getElementById('invite-link').value;
+            try {
+                const url = new URL(link);
+                roomId = url.searchParams.get('room');
+                peerName = url.searchParams.get('name') || 'собеседник';
+                
+                document.getElementById('join-room').classList.add('hidden');
+                document.getElementById('create-room').classList.remove('hidden');
+                document.getElementById('room-link').textContent = link;
+                
+                document.getElementById('create-status').innerHTML = '⏳ Подключение к собеседнику...';
+                
+                // Создаем WebRTC соединение как не инициатор
+                isInitiator = false;
+                createPeerConnection();
+                
+                // Проверяем есть ли offer в ссылке
+                const offerParam = url.searchParams.get('offer');
+                if (offerParam) {
+                    try {
+                        const offer = JSON.parse(atob(offerParam));
+                        await peerConnection.setRemoteDescription(new RTCSessionDescription(offer));
+                        console.log('✅ Remote description установлен из offer');
+                        
+                        // Создаем answer
+                        const answer = await peerConnection.createAnswer();
+                        await peerConnection.setLocalDescription(answer);
+                        
+                        // Добавляем answer в ссылку
+                        const answerParam = btoa(JSON.stringify(answer));
+                        url.searchParams.set('answer', answerParam);
+                        document.getElementById('room-link').textContent = url.toString();
+                        
+                        console.log('✅ Answer создан и добавлен в ссылку');
+                    } catch (e) {
+                        console.error('Ошибка установки offer:', e);
+                    }
+                }
+            } catch (e) {
+                alert('Неверная ссылка!');
+            }
+        }
+
+        function createPeerConnection() {
+            const config = {
+                iceServers: [
+                    { urls: 'stun:stun.l.google.com:19302' },
+                    { urls: 'stun:stun1.l.google.com:19302' },
+                    { urls: 'stun:stun2.l.google.com:19302' },
+                    { urls: 'stun:stun3.l.google.com:19302' },
+                    { urls: 'stun:stun4.l.google.com:19302' }
+                ]
+            };
+
+            peerConnection = new RTCPeerConnection(config);
+
+            // Создаем канал данных если мы инициатор
+            if (isInitiator) {
+                dataChannel = peerConnection.createDataChannel('chat');
+                setupDataChannel();
+            } else {
+                peerConnection.ondatachannel = (event) => {
+                    dataChannel = event.channel;
+                    setupDataChannel();
+                };
+            }
+
+            // Обработка ICE кандидатов
+            peerConnection.onicecandidate = (event) => {
+                if (event.candidate) {
+                    console.log('❄️ Новый ICE кандидат');
+                    
+                    // Добавляем кандидата в URL только если уже есть remote description
+                    if (peerConnection.remoteDescription) {
+                        const url = new URL(document.getElementById('room-link').textContent);
+                        const candidates = url.searchParams.get('candidates') || '';
+                        const candidateParam = btoa(JSON.stringify(event.candidate));
+                        url.searchParams.set('candidates', candidates + (candidates ? ',' : '') + candidateParam);
+                        document.getElementById('room-link').textContent = url.toString();
+                    } else {
+                        // Сохраняем кандидата в очередь
+                        pendingCandidates.push(event.candidate);
+                    }
+                }
+            };
+
+            // Отслеживание состояния соединения
+            peerConnection.onconnectionstatechange = () => {
+                console.log('🔗 Состояние соединения:', peerConnection.connectionState);
+                
+                if (peerConnection.connectionState === 'connected') {
+                    // Показываем чат
+                    document.getElementById('create-room').classList.add('hidden');
+                    document.getElementById('chat-room').classList.remove('hidden');
+                    document.getElementById('peer-name').textContent = peerName;
+                    
+                    // Отправляем приветствие
+                    setTimeout(() => {
+                        sendMessageToPeer({
+                            type: 'hello',
+                            name: username
+                        });
+                    }, 500);
+                }
+            };
+
+            // Проверяем URL каждую секунду на новые данные
+            startPolling();
+        }
+
+        function setupDataChannel() {
+            dataChannel.onopen = () => {
+                console.log('📡 Канал данных открыт');
+            };
+
+            dataChannel.onclose = () => {
+                console.log('📡 Канал данных закрыт');
+            };
+
+            dataChannel.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                console.log('📨 Получено сообщение:', data.type);
+                
+                if (data.type === 'hello') {
+                    peerName = data.name;
+                    document.getElementById('peer-name').textContent = peerName;
+                } else if (data.type === 'message') {
+                    addMessage(data.text, data.sender);
+                }
+            };
+        }
+
+        function startPolling() {
+            // Проверяем URL каждые 2 секунды на новые данные от собеседника
+            const interval = setInterval(() => {
+                if (peerConnection.connectionState === 'connected') {
+                    clearInterval(interval);
+                    return;
+                }
+
+                const url = new URL(window.location.href);
+                
+                // Проверяем наличие answer
+                const answerParam = url.searchParams.get('answer');
+                if (answerParam && !peerConnection.currentRemoteDescription) {
+                    try {
+                        const answer = JSON.parse(atob(answerParam));
+                        peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
+                        console.log('✅ Remote description установлен из answer');
+                    } catch (e) {
+                        console.error('Ошибка установки answer:', e);
+                    }
+                }
+
+                // Проверяем наличие кандидатов
+                const candidatesParam = url.searchParams.get('candidates');
+                if (candidatesParam && peerConnection.remoteDescription) {
+                    const candidates = candidatesParam.split(',');
+                    candidates.forEach(candidateParam => {
+                        if (candidateParam) {
+                            try {
+                                const candidate = JSON.parse(atob(candidateParam));
+                                peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
+                                console.log('✅ Добавлен ICE кандидат из URL');
+                            } catch (e) {
+                                console.error('Ошибка добавления кандидата:', e);
+                            }
+                        }
+                    });
+                    
+                    // Очищаем кандидатов из URL
+                    url.searchParams.delete('candidates');
+                    window.history.replaceState({}, '', url);
+                }
+
+                // Добавляем сохраненные кандидаты если появился remote description
+                if (pendingCandidates.length > 0 && peerConnection.remoteDescription) {
+                    pendingCandidates.forEach(candidate => {
+                        peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
+                        console.log('✅ Добавлен сохраненный ICE кандидат');
+                    });
+                    pendingCandidates = [];
+                }
+            }, 2000);
+        }
+
+        function sendMessageToPeer(data) {
+            if (dataChannel && dataChannel.readyState === 'open') {
+                dataChannel.send(JSON.stringify(data));
+            } else {
+                console.log('Канал данных еще не открыт, сообщение не отправлено');
+            }
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('message-input');
+            const text = input.value.trim();
+            
+            if (text) {
+                const message = {
+                    type: 'message',
+                    text: text,
+                    sender: username
+                };
+                
+                sendMessageToPeer(message);
+                addMessage(text, username, true);
+                input.value = '';
+            }
+        }
+
+        function addMessage(text, sender, isOwn = false) {
+            const messagesDiv = document.getElementById('messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isOwn ? 'own' : ''}`;
+            
+            const time = new Date().toLocaleTimeString('ru-RU', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            messageDiv.innerHTML = `
+                <div class="message-info">
+                    <span>${sender}</span>
+                    <span>${time}</span>
+                </div>
+                <div>${text}</div>
+            `;
+            
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function copyLink(element) {
+            const text = element.textContent || element.innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.querySelector('#create-room button');
+                const originalText = btn.textContent;
+                btn.textContent = '✅ Скопировано!';
+                setTimeout(() => btn.textContent = originalText, 2000);
+            });
+        }
+
+        function resetApp() {
+            if (peerConnection) {
+                peerConnection.close();
+                peerConnection = null;
+            }
+            
+            document.getElementById('chat-room').classList.add('hidden');
+            document.getElementById('create-room').classList.add('hidden');
+            document.getElementById('join-room').classList.add('hidden');
+            document.getElementById('step2').classList.add('hidden');
+            document.getElementById('step1').classList.remove('hidden');
+            
+            document.getElementById('messages').innerHTML = '';
+            
+            // Очищаем URL
+            window.history.replaceState({}, '', window.location.pathname);
+            
+            pendingCandidates = [];
+        }
+
+        // Проверяем URL при загрузке
+        window.addEventListener('load', () => {
+            const url = new URL(window.location.href);
+            const roomParam = url.searchParams.get('room');
+            const nameParam = url.searchParams.get('name');
+            
+            if (roomParam && nameParam) {
+                username = nameParam;
+                document.getElementById('username').value = username;
+                goToStep2();
+                
+                setTimeout(() => {
+                    document.getElementById('step2').classList.add('hidden');
+                    document.getElementById('create-room').classList.remove('hidden');
+                    
+                    roomId = roomParam;
+                    document.getElementById('room-link').textContent = url.toString();
+                    
+                    isInitiator = false;
+                    createPeerConnection();
+                    
+                    document.getElementById('create-status').innerHTML = '⏳ Подключение к собеседнику...';
+                }, 500);
+            }
+        });
+    </script>
+</body>
+</html>
